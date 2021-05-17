@@ -9,10 +9,12 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.room.Room
 import com.example.todolist.R
 import com.example.todolist.data.database.AppDatabase
 import kotlinx.android.synthetic.main.activity_task.*
+import kotlinx.android.synthetic.main.item_todo.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -75,7 +77,23 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
                 // on clicking this, we can add custom category to spinner
                 addCategoryToSpinner()
             }
+
+            R.id.saveBtn -> {
+                saveTodo()
+            }
+
         }
+    }
+
+    private fun saveTodo() {
+        val category = spinnerCategory.selectedItem.toString()
+        val title = titleInpLay.editText?.text.toString()
+        val description = taskInpLay.editText?.text.toString()
+
+//        if(category != null && title != null && description != null){
+//            Toast.makeText(this, "Fill the vacant values", Toast.LENGTH_SHORT).show()
+//        }
+
     }
 
     private fun addCategoryToSpinner() {
