@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Todo List</string>
+    <string name="history">History</string>
+    <string name="search">Search</string>
+</resources>
