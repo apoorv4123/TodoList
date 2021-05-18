@@ -10,7 +10,7 @@ data class TodoModel(
     var category: String,
     var date: Long,
     var time: Long,
-    var isFinished: Int = -1,
+    var isFinished: Int = 0,
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0// Here we've added id as last parameter, because in kotlin we have named
     // arguments so when we make an object of this class, we'll have to pass id if it

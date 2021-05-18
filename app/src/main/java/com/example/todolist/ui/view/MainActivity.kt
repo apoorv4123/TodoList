@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -50,6 +52,9 @@ class MainActivity : AppCompatActivity() {
             if (!it.isNullOrEmpty()) {
                 list.clear()
                 list.addAll(it)
+                adapter.notifyDataSetChanged()
+            } else {
+                list.clear()
                 adapter.notifyDataSetChanged()
             }
         })
@@ -167,8 +172,52 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.main_menu, menu)
 
         // Code for Search view will be inside this function rather than onClick()
+        val item = menu.findItem(R.id.search)
+        val searchView = item.actionView as SearchView// convert the item to searchView
 
+        item.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                displayTodo()
+                return true// return true for this functionality to work
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                displayTodo()
+                return true// return true for this functionality to work
+            }
+        })
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                // This function will be called when you submit something in searchView
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // This function will be called as soon as you write something in searchView
+                if (!newText.isNullOrEmpty()) {
+                    displayTodo(newText)
+                }
+                return true
+            }
+
+        })
         return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun displayTodo(newText: String = "") {
+        // Query to db
+        db.todoDao().getTask().observe(this, Observer {
+            if (it.isNotEmpty()) {
+                list.clear()
+                list.addAll(
+                    it.filter { todo ->
+                        todo.title.contains(newText, true)
+                    }
+                )
+                adapter.notifyDataSetChanged()
+            }
+        })
     }
 
     // This function is similar to onClickListener. This function will be invoked when 3 dots in toolBar

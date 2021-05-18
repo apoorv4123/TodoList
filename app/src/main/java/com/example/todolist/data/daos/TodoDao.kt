@@ -9,11 +9,11 @@ import com.example.todolist.data.models.TodoModel
 @Dao
 interface TodoDao {
 
-    @Insert
+    @Insert()
     suspend fun insertTask(todoModel: TodoModel): Long
 
     // get the list of unfinished tasks
-    @Query("Select * from TodoModel where isFinished != 0")
+    @Query("Select * from TodoModel where isFinished == 0")
     fun getTask(): LiveData<List<TodoModel>>
 
     // finish task on right swipe
