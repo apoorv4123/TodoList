@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
                     // Check whether swipe direction is positive or negative
                     if (dX > 0) { // Positive, Rightwards swipe
                         // draw the green color and display the white check image
-                        icon = BitmapFactory.decodeResource(resources, R.mipmap.ic_check)
+                        icon = BitmapFactory.decodeResource(resources, R.mipmap.ic_check_white_png)
                         paint.color = Color.parseColor("#388E3C")
 
                         // draw rectangle in the canvas
@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
                         )
 
                     } else {
-                        icon = BitmapFactory.decodeResource(resources, R.mipmap.ic_delete)
+                        icon = BitmapFactory.decodeResource(resources, R.mipmap.ic_delete_white_png)
 
                         paint.color = Color.parseColor("#D32F2F")
 

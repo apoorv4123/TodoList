@@ -33,7 +33,8 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
 
     lateinit var timeSetListener: TimePickerDialog.OnTimeSetListener// For timePickerDialog
 
-    var finalDate = 0L// These variables will help in saving data to the db. They need to be updated too
+    var finalDate =
+        0L// These variables will help in saving data to the db. They need to be updated too
     var finalTime = 0L
 
     private val labels = arrayListOf("Personal", "Business", "Insurance", "Banking", "Shopping")
