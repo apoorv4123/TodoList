@@ -6,7 +6,9 @@
     <color name="litherGray">#a1a1a1</color>
     <color name="green">#388E3C</color>
     <color name="red">#D32F2F</color>
+    <color name="yellow">#FFC107</color>
     <color name="white">#ffffff</color>
+    <color name="darkBlue">#1A0657</color>
 
 
     <array name="random_color">

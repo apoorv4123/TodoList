@@ -161,7 +161,7 @@
             android:layout_marginEnd="16dp"
             android:layout_weight="1" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imgAddCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

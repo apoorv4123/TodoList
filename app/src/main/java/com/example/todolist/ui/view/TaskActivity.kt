@@ -82,10 +82,10 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
                 setTimeListener()
             }
 
-//            R.id.imgAddCategory -> {
-//                // on clicking this, we can add custom category to spinner
-//                addCategoryToSpinner()
-//            }
+            R.id.imgAddCategory -> {
+                // on clicking this, we can add custom category to spinner
+                addCategoryToSpinner()
+            }
 
             R.id.saveBtn -> {
                 saveTodo()
