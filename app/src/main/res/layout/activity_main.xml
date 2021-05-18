@@ -15,10 +15,12 @@
         app:titleTextColor="@color/white" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_margin="10dp"
         android:id="@+id/rvTodos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolBar" />
+        android:layout_below="@+id/toolBar"
+        tools:listitem="@layout/item_todo" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"

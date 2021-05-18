@@ -18,6 +18,7 @@ class SpinnerActivity : AppCompatActivity() {
             val i = Intent(this, TaskActivity::class.java)
             i.putExtra(KEY_1, categoryInplay.etCategory.text.toString())
             startActivity(i)
+            finish()
         }
 
     }

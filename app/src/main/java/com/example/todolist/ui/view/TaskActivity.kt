@@ -2,19 +2,22 @@ package com.example.todolist.ui.view
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
-import androidx.room.Room
+import androidx.appcompat.app.AppCompatActivity
 import com.example.todolist.R
 import com.example.todolist.data.database.AppDatabase
+import com.example.todolist.data.models.TodoModel
 import kotlinx.android.synthetic.main.activity_task.*
 import kotlinx.android.synthetic.main.item_todo.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,14 +33,18 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
 
     lateinit var timeSetListener: TimePickerDialog.OnTimeSetListener// For timePickerDialog
 
+    var finalDate = 0L// These variables will help in saving data to the db. They need to be updated too
+    var finalTime = 0L
+
     private val labels = arrayListOf("Personal", "Business", "Insurance", "Banking", "Shopping")
 
     val db by lazy {
-        Room.databaseBuilder(
-            this,
-            AppDatabase::class.java,
-            DB_NAME
-        ).build()
+//        Room.databaseBuilder(
+//            this,
+//            AppDatabase::class.java,
+//            DB_NAME
+//        ).build()
+        AppDatabase.getDatabase(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +55,7 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
         // We have to handle multiple clicks, so we'll be implementing the interface of View.OnClickListener
         dateEdt.setOnClickListener(this)
         timeEdt.setOnClickListener(this)
+        saveBtn.setOnClickListener(this)
 
         setUpSpinner()
     }
@@ -73,10 +81,10 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
                 setTimeListener()
             }
 
-            R.id.imgAddCategory -> {
-                // on clicking this, we can add custom category to spinner
-                addCategoryToSpinner()
-            }
+//            R.id.imgAddCategory -> {
+//                // on clicking this, we can add custom category to spinner
+//                addCategoryToSpinner()
+//            }
 
             R.id.saveBtn -> {
                 saveTodo()
@@ -90,21 +98,32 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
         val title = titleInpLay.editText?.text.toString()
         val description = taskInpLay.editText?.text.toString()
 
-//        if(category != null && title != null && description != null){
-//            Toast.makeText(this, "Fill the vacant values", Toast.LENGTH_SHORT).show()
-//        }
+        if (category == "" || title == "" || description == "" || finalDate == 0L || finalTime == 0L) {
+            Toast.makeText(this, "Fill all the fields", Toast.LENGTH_SHORT).show()
+        }
 
+        GlobalScope.launch(Dispatchers.Main) {
+            val id = withContext(Dispatchers.IO) {
+                return@withContext db.todoDao()
+                    .insertTask(TodoModel(title, description, category, finalDate, finalTime))
+            }
+
+            if (category != "" && title != "" && description != "" && finalDate != 0L && finalTime != 0L) {
+                finish()// to finish the activity after clicking  on SAVE TASK button
+            }
+        }
     }
 
     private fun addCategoryToSpinner() {
-        val adapter =
-            ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, labels)
-        val i = Intent(this, SpinnerActivity::class.java)
-        startActivity(i)
-        val category = intent.getStringExtra(KEY_1)
-        labels.add(category!!)
-        labels.sort()
-        spinnerCategory.adapter = adapter
+//        val adapter =
+//            ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, labels)
+//        val i = Intent(this, SpinnerActivity::class.java)
+//        startActivity(i)
+//        val category = intent.getStringExtra(KEY_1)
+//        labels.add(category!!)
+//        labels.sort()
+//        spinnerCategory.adapter = adapter
+        Toast.makeText(this, "Add new Category", Toast.LENGTH_SHORT).show()
     }
 
     private fun setTimeListener() {
@@ -138,6 +157,7 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
         val myformat = "h:mm a" //
 
         val sdf = SimpleDateFormat(myformat)
+        finalTime = myCalendar.time.time
         timeEdt.setText(sdf.format(myCalendar.time))
     }
 
@@ -174,6 +194,7 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
         val myformat = "EEE, d MMM yyyy" // "EEE, d MM yyyy" -> Mon, 5 05 2021
 
         val sdf = SimpleDateFormat(myformat)
+        finalDate = myCalendar.time.time
         dateEdt.setText(sdf.format(myCalendar.time))
 
         timeInptLay.visibility =
