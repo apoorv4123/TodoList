@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.view.SettingsActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolBarSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/purple_400"
+        app:title="@string/settings"
+        app:titleTextColor="@color/black" />
+
+<!--    <TextView-->
+<!--        android:textSize="20sp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:textColor="@color/darkBlue"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/theme"/>-->
+
+<!--    <TextView-->
+<!--        android:textSize="20sp"-->
+<!--        android:layout_marginTop="50dp"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:textColor="@color/darkBlue"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/language"/>-->
+
+<!--    <LinearLayout-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginStart="30dp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content">-->
+<!--        <ImageView-->
+<!--            android:src="@drawable/ic_baseline_language_24"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:tint="@color/black" />-->
+<!--        <TextView-->
+<!--            android:layout_marginStart="2dp"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="15dp"-->
+<!--            android:text="@string/language"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"/>-->
+<!--    </LinearLayout>-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_baseline_android_24"
+            app:tint="@color/gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sorry, we're still working on this!"
+            android:textColor="@color/gray"
+            android:textSize="25sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

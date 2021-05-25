@@ -4,17 +4,19 @@
     <color name="colorPrimaryDark">#388E3C</color>
     <color name="colorAccent">#ff7058</color>
     <color name="litherGray">#a1a1a1</color>
+    <color name="gray">#615F5F</color>
     <color name="green">#388E3C</color>
     <color name="red">#D32F2F</color>
     <color name="yellow">#FFC107</color>
     <color name="white">#ffffff</color>
     <color name="darkBlue">#1A0657</color>
-
+    <color name="black">#040000</color>
+    <color name="purple_400">#ab47bc</color>
 
     <array name="random_color">
         <item name="red_400" type="color">#e84e40</item>
         <item name="pink_400" type="color">#ec407a</item>
-        <item name="purple_400" type="color">#ab47bc</item>
+        <item name="purple_401" type="color">#ab47bc</item>
         <item name="deep_purple_400" type="color">#7e57c2</item>
         <item name="indigo_400" type="color">#5c6bc0</item>
         <item name="blue_400" type="color">#738ffe</item>

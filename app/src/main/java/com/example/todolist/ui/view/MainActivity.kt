@@ -227,6 +227,9 @@ class MainActivity : AppCompatActivity() {
             R.id.history -> {
                 startActivity(Intent(this, HistoryActivity::class.java))
             }
+            R.id.settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
+            }
         }
         return super.onOptionsItemSelected(item)
     }

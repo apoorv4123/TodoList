@@ -1,17 +1,18 @@
 package com.example.todolist.ui.view
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
+import android.app.*
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.DatePicker
-import android.widget.TimePicker
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import com.example.todolist.R
 import com.example.todolist.data.database.AppDatabase
 import com.example.todolist.data.models.TodoModel
+import com.example.todolist.ui.ReminderBroadcast
 import kotlinx.android.synthetic.main.activity_task.*
 import kotlinx.android.synthetic.main.item_todo.*
 import kotlinx.coroutines.Dispatchers
@@ -58,11 +59,31 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
         timeEdt.setOnClickListener(this)
         saveBtn.setOnClickListener(this)
 
+        // set up notification channel
+        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            nm.createNotificationChannel(
+                NotificationChannel(
+                    "first",
+                    "default",
+                    NotificationManager.IMPORTANCE_HIGH
+                )
+            )
+        }
+
         setUpSpinner()
+
+        // Set up back button in toolbar
+        toolbarAddTask.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
+        toolbarAddTask.setNavigationOnClickListener {
+            finish()
+        }
     }
 
+    lateinit var adapter: ArrayAdapter<String>
+
     private fun setUpSpinner() {
-        val adapter =
+        adapter =
             ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, labels)
         labels.sort()
         spinnerCategory.adapter = adapter
@@ -94,22 +115,27 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private var category = ""
+    private var title = ""
+    private var description = ""
+
     private fun saveTodo() {
-        val category = spinnerCategory.selectedItem.toString()
-        val title = titleInpLay.editText?.text.toString()
-        val description = taskInpLay.editText?.text.toString()
+        category = spinnerCategory.selectedItem.toString()
+        title = titleInpLay.editText?.text.toString()
+        description = taskInpLay.editText?.text.toString()
 
         if (category == "" || title == "" || description == "" || finalDate == 0L || finalTime == 0L) {
             Toast.makeText(this, "Fill all the fields", Toast.LENGTH_SHORT).show()
         }
 
-        GlobalScope.launch(Dispatchers.Main) {
-            val id = withContext(Dispatchers.IO) {
-                return@withContext db.todoDao()
-                    .insertTask(TodoModel(title, description, category, finalDate, finalTime))
-            }
+        if (category != "" && title != "" && description != "" && finalDate != 0L && finalTime != 0L) {
+            GlobalScope.launch(Dispatchers.Main) {
+                val id = withContext(Dispatchers.IO) {
+                    return@withContext db.todoDao()
+                        .insertTask(TodoModel(title, description, category, finalDate, finalTime))
+                }
 
-            if (category != "" && title != "" && description != "" && finalDate != 0L && finalTime != 0L) {
+                scheduleNotification()
                 finish()// to finish the activity after clicking  on SAVE TASK button
             }
         }
@@ -202,4 +228,42 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
             View.VISIBLE// We saw that only after setting date, we'll be able to set time
     }
 
+    private fun scheduleNotification() {
+        val intent = Intent(this, ReminderBroadcast::class.java)
+
+        val pi = PendingIntent.getActivity(this, 123, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val reminderNotification = NotificationCompat.Builder(this, "first")
+            .setContentTitle(category)
+            .setContentText(description)
+            .setAutoCancel(true)
+            .setContentIntent(pi)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .build()
+
+//        nm.notify(1, reminderNotification)
+
+        Toast.makeText(this, "Reminder Set!", Toast.LENGTH_SHORT).show()
+    }
+
+    fun addNewCategory(view: View) {
+        val editText = EditText(this)
+        editText.hint = "Please enter a new category here"
+        val newCategoryAlertdialog = AlertDialog.Builder(this)
+            .setTitle("New Category:")
+            .setView(editText)
+            .setPositiveButton("ADD") { dialogInterface, which ->
+                if (editText.text.toString() != "") {
+                    val category = editText.text.toString()
+                    labels.add(category)
+                    labels.sort()
+                    adapter.notifyDataSetChanged()
+                    spinnerCategory.adapter = adapter
+                    Toast.makeText(this, "Category Added!", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setCancelable(true)
+            .create()
+        newCategoryAlertdialog.show()
+    }
 }

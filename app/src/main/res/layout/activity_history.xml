@@ -12,13 +12,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/yellow"
-        app:title="History"
+        app:title="@string/history"
         app:titleTextColor="@color/darkBlue" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:layout_width="150dp"
-        android:layout_gravity="center"
-        android:src="@mipmap/ic_delete_white_png"
-        android:layout_height="150dp"/>
+    <!--    <androidx.appcompat.widget.AppCompatImageButton-->
+    <!--        android:layout_width="150dp"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:src="@mipmap/ic_delete_white_png"-->
+    <!--        android:layout_height="150dp"/>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_baseline_android_24"
+            app:tint="@color/gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sorry, we're still working on this!"
+            android:textColor="@color/gray"
+            android:textSize="25sp" />
+
+    </LinearLayout>
 
 </LinearLayout>
